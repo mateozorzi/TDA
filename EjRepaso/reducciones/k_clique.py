@@ -29,15 +29,6 @@ se puede entender que al revertir las adyacencias de los vertices, donde antes s
 ahora esos mismos vertices estaran formando un conjunto independiento de tamaño k en el grafo original. Un vertice que pertencia 
 al grafo donde habi un k-clique, al revertir las adyacencias no puede quedar adyacente a otro vertice que tambien pertenecia al
 subgrafo completo de grafo_, lo contrario indicaria que el reultado de k_clique no es valido, lo cual es absurdo.
-
-
-
-
-
-
-
-
-
 """
 
 def validador(grafo, solucion, k):
