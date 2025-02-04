@@ -47,28 +47,23 @@ def esClique(clique, grafo):
     return True
 
 def validador(grafo, R, cliques):
-    if len(cliques) < R:
+    if len(cliques) > R:
         return False
     
-    for clique in cliques: #O(c*v^2)
+    for clique in cliques: #O(v^2)
         if not esClique(clique, grafo):
             return False
         
     #comprobar que un vertice no se repita
     # c = cantidad de cliques
-    for i in range(len(cliques)): #O(c^2*v)
-        for j in range(len(cliques)):
-            if i == j:
-                continue
-            verticesJ = set(cliques[j])
-
-            for v in cliques[i]:
-                if v in verticesJ:
-                    return False #hay un vertice que se repite en dos cliques
-        
-        return False     
+    visitados = set()
+    for clique in cliques:
+        for v in clique: #O(v)
+            if v in visitados:
+                return False
+            visitados.add(v)     
         
     return True
 
-#complejidad O( c*(v^2) + v*(c^2) )
+#complejidad O( v^2 + v) = O(v^2)
     
