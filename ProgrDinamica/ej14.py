@@ -59,7 +59,7 @@ def lunatico(ganancias):
 #O(n)
 
 # Definir un arreglo de ganancias
-ganancias = [20, 15]
+ganancias = [20, 15, 300]
 
 # Llamar a la función lunatico con el arreglo de ganancias
 resultado = lunatico(ganancias)
