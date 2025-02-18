@@ -25,7 +25,12 @@ def vertex_cover_min(grafo):
     problem += pulp.LpAffineExpression([{variables[i], 1} for i in range(len(variables))])
     problem.solve()
 
-    return list(map(lambda vi: pulp.value(vi), variables))
+    conjunto_minimo = []
+    for i in range(len(variables)):
+        if variables[i].value() == 1:
+            conjunto_minimo.append(vertices[i])
+    
+    return conjunto_minimo
 
 grafo = grafo.Grafo()
 grafo.agregar_arista('A','B',1)
