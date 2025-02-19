@@ -1,14 +1,10 @@
-
-
 import grafo
 
 def esClique(grafo, subgrafo):
+    cant_vertices = len(subgrafo)
     for v in subgrafo:
-        for w in subgrafo:
-            if v == w:
-                continue
-            if not grafo.estan_unidos(v,w):
-                return False
+        if len(subgrafo.adyacentes(v)) != cant_vertices - 1:
+            return False
     
     return True
 
