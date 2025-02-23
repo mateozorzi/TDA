@@ -1,10 +1,15 @@
 def cambio_bt(n, monedas, cantidadMonedas, indice,parcial, sol):
     if len(sol) == 0 and sum(parcial) == n:
-        sol = parcial.copy()
-        return sol
+        return parcial
     
     if len(parcial) < len(sol) and sum(parcial) == n:
-        sol = parcial.copy()
+        return parcial
+    
+    if indice >= len(monedas):
+        return sol
+    
+    if sum(parcial) + (monedas[i]*cantidadMonedas[i] for i in range(indice, len(monedas))) < n:
+        #las sol parcial + las moendas que quedan por probar no llegan al cambio a dar
         return sol
 
     if cantidadMonedas[indice] > 0 and monedas[indice] <= (n - sum(parcial)):
