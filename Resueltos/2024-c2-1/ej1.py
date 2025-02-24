@@ -66,6 +66,40 @@ def ford_fulkeron(grafo, s, t):
     
     return flujo
 
+def buscar_camino(grafo,flujo, v, w):
+    visitados = set()
+    padres = {}
+    cola = heapq.Heap()
+
+    visitados.add(v)
+    padres[v] = None
+    cola.push(v)
+
+    while cola.notEmpty():
+        vertice = cola.pop()
+
+        if vertice == w:
+            break
+
+        for ady in grafo.adyacentes(vertice):
+            if ady not in visitados and flujo[(vertice, ady)] == 1:
+                visitados.add(ady)
+                padres[ady] = vertice
+                cola.push(ady)
+    
+    if w not in visitados:
+        return None
+    
+    camino = []
+    actual = w
+    while actual is not None:
+        flujo[(padres[actual], actual)] = 0
+        camino.append(actual)
+        actual = padres[actual]
+    
+    return camino, flujo
+
+
 
 def camino_disjuntos(grafo, v, w):
     #por flujo maximo, creo un grafo dirigo con aristas idas t vueltas(para emular un grafo no dirigido) con
@@ -81,3 +115,13 @@ def camino_disjuntos(grafo, v, w):
         grafoDirigido.agregar_arista(a[1], a[0], 1)
     
     flujo = ford_fulkeron(grafoDirigido, v, w)
+
+    cantidad_caminos = 0
+    caminos = []
+    camino, flujo = buscar_camino(grafoDirigido, flujo, v, w)
+    while camino:
+        cantidad_caminos += 1
+        caminos.append(camino)
+        camino, flujo = buscar_camino(grafoDirigido, flujo, v, w)
+
+    return caminos, cantidad_caminos
