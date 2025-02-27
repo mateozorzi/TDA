@@ -1,0 +1,66 @@
+Con m = 3
+Para definir la cantiadd de columnas y las demandas de las columnas. Ordenamos de menor a mayor el conjunto S de 3-partiton que representara el largo de los barcos. 
+Definimos m bloques:
+	Bloque 1: conformado por los m barcos mas pequeños {b1,b4,b7}
+	Bloque 2: conformado por los m barcos del medio {b2,b5,b8}
+	Bloque 3: conformado por los m barcos mas grandes {b3,b6,b9}
+
+Vemos cuanto ocupa cada bloque con el max barco de este:
+	Bloque 1: barco max b7, ocupa jb7 col, comienza en 0
+	Bloque 2: barco max b8, ocupa jb8 col, comienza en jb7+1
+	Bloque 3: barco max b9, ocupa jb9 col, comienza en (jb7+1)+(jb8+1)
+
+Definiremos la cantidad de columnas como la suma de los barcos maximos de cada bloque +2 (para evitar ady en las filas)
+
+Comienzo del bloque 1: voy desde 0 a jb7-1 y por cada columna j veo que barcos estan activados en la columna
+Luego voy al bloque 2: voy desde jb7+1 hasta (jb7+1)+(jb8-1) y por cada columna j veo que barcos estan activados en las columnas
+Finalemnte al bloque 3: voy desde (jb7+1)+(jb8+1) hasta (jb7+1)+(jb8+1)+jb9, y por cada columna j veoque barcos estan activados en las columnas
+
+Ej S={2,3,4,6,7,7,8,8,9}
+
+Bloque 1 conformado por {2,3,4}
+bloque 2 conformado por {6,7,7}
+bloque 3 conformado por {8,8,9}
+
+max bloque 1 = 4
+max bloque 2 = 7
+max bloque 3 = 9
+
+Cantidad col = 4 + 7 + 9 +2 = 22
+
+Defino las demandas de las columnas, por cada elemento de cada bloque que este activo en la columnna j:
+j = 0, en el bloque 1 ocupa los 3 elementos {2,3,4} -> demanda columna 0 = 3
+j = 1, en el bloque 1 ocupa los 3 elementos {2,3,4} -> demanda columna 1 = 3
+j = 2, en el bloque 1 ocupa 2 elementos {3,4} -> demanda columna 2 = 2
+j = 3, en el bloque 1 ocupa 1 elemento {4} -> demanda col 3 = 1
+	j = 3 = max bloque 1 -1 = 4 - 1 -> entonces termina el bloque 1
+
+j = 4 dejamos un espacio para evitar posibles adyacencias -> demanda col 4 = 0
+
+j = 5 en el bloque 2 ocupa los 3 elementos {6,7,7} -> demanda col 5 = 3
+j = 6 en el bloque 2 ocupa los 3 elementos {6,7,7} -> demanda col 6 = 3
+j = 7 en el bloque 2 ocupa los 3 elementos {6,7,7} -> demanda col 7 = 3
+j = 8 en el bloque 2 ocupa los 3 elementos {6,7,7} -> demanda col 8 = 3
+j = 9 en el bloque 2 ocupa los 3 elementos {6,7,7} -> demanda col 9 = 3
+j = 10 en el bloque 2 ocupa los 3 elementos {6,7,7} -> demanda col 10 = 3
+j = 11 en el bloque 2 ocupa 2 elementos {7,7} -> demanda col 11 = 2
+	j = 11 = (max bloque 1 +1) + (max bloque 2 -1) = 11 -> termina el bloque 2
+
+j = 12 dejamos espacio para evitar posibles adyacencias -> demanda col 12 = 0
+
+j = 13 en el bloque 3 ocupa los 3 elementos {8,8,9} -> demanda col 13 = 3
+j = 14 en el bloque 3 ocupa los 3 elementos {8,8,9} -> demanda col 14 = 3
+j = 15 en el bloque 3 ocupa los 3 elementos {8,8,9} -> demanda col 15 = 3
+j = 16 en el bloque 3 ocupa los 3 elementos {8,8,9} -> demanda col 16 = 3
+j = 17 en el bloque 3 ocupa los 3 elementos {8,8,9} -> demanda col 17 = 3
+j = 18 en el bloque 3 ocupa los 3 elementos {8,8,9} -> demanda col 18 = 3
+j = 19 en el bloque 3 ocupa los 3 elementos {8,8,9} -> demanda col 19 = 3
+j = 20 en el bloque 3 ocupa los 3 elementos {8,8,9} -> demanda col 20 = 3
+j = 21 en el bloque 3 ocupa 1 elemento {9} -> demanda col 21 = 1
+
+
+
+
+
+
+		
