@@ -5,6 +5,8 @@ Pista: Pensar primero cómo habría que hacer si el arreglo tuviera 4 elementos 
 """
 
 def alternar_dyc(arr):
+    if len(arr) == 2:
+        return arr
     if len(arr) == 4:
         aux = arr[1]
         arr[1] = arr[2]
@@ -13,19 +15,24 @@ def alternar_dyc(arr):
     
     mitad = (len(arr)-1)//2
 
-    arr = alternar(arr[:mitad//2+1]+arr[mitad+1:mitad+(mitad//2)+2]) + alternar(arr[mitad//2+1:mitad+1] + arr[mitad+(mitad//2)+2:mitad+(mitad//2)+2+(mitad//2)+1])
+    arr = alternar_dyc(arr[:mitad//2+1]+arr[mitad+1:mitad+(mitad//2)+2]) + alternar_dyc(arr[mitad//2+1:mitad+1] + arr[mitad+(mitad//2)+2:mitad+(mitad//2)+2+(mitad//2)+1])
 
     return arr
+
+#T(n) = 2T(n/2) + O(1), A = 2, B = 2, C = 0 -> Por TM -> log B(A) = 1 > C = O(n^(logb(a))) = O(n)
 
 def alternar(arr):
     return alternar_dyc(arr)
 
 
 arr = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "c11", "c12", "c13", "c14", "c15", "c16","d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14", "d15", "d16"]
-print(alternar(arr))
-
-arr = arr = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8","d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8"]
 #print(alternar(arr))
+
+arr = ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8","d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8"]
+#print(alternar(arr))
+
+arr =  [0,2,4,6,1,3,5,7]
+print(alternar(arr))
 
 
     
