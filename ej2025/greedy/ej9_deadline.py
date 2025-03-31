@@ -36,3 +36,4 @@ def minimizar_latencia(L_deadline, T_tareas):
     return orden
 
 #Regla greedy: En mi situacion aactual busco realizar la tares que tenga el deadline mas proximo a finalizar, asi buscando minimzar la latencia de las tareas total
+#Es optimo, ya que al realizar primero las tareas que menor deadline tiene, minimzo las latencias en los primeros trabajos

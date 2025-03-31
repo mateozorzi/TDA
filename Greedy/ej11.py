@@ -27,5 +27,5 @@ def bolsas(capacidad, productos):
     return bolsasCargadas
 
 
-arr = [5,4,3,2,1]
-print(bolsas(5,arr))
+arr = [4,4,3,2,2,2,2,1,1]
+print(bolsas(9,arr))
