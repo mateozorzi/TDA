@@ -30,6 +30,17 @@ def max_subarray(arr):
 
     sum_izq = max_subarray(izq)
     sum_der = max_subarray(der)
+    """
+    busco formar un nuevo subarreglo cruzado, usadno el lado izq y der
+    Itero desde el lado izq el indice de mayor valor y voy para atras y veo si me conviene o on oagregar el elemento
+    Para el lado derehco lo mismo, pero empiezo desde el menor idice hasta que termine
+    luego comparo con los candidatos de izq y der antes calculados
+    """
+    #cruzado = max_subarray_cruzado(izq,der)
+
+    #[i1,i2,....,ik][d1,d2,....,dm]
+    #           <--  -->
+    #veo desde ik para atras hasta donde me conviene incluir y desde d1 hasta dm hasta donde me conviene incluir
 
     if sum(arr) > sum(sum_izq) + sum(sum_der) and sum(arr) > sum(sum_izq) and sum(arr) > sum(sum_der):
         return arr

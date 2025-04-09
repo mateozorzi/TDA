@@ -1,167 +1,92 @@
-import grafo
+n = 9
 
-def agregar_arista_unica(g, nodo1, nodo2, peso=1):
-    # Ordenamos los nodos para que siempre se agregue la arista en una dirección fija.
-    v1, v2 = sorted([nodo1, nodo2])
-    # Suponiendo que el método existe_arista devuelve True si la arista ya existe.
-    if not g.existe_arista(v1, v2):
-        g.agregar_arista(v1, v2, peso=peso)
+def siguiente_pos(matriz, f,c):
+    cant_filas = len(matriz)
+    cant_col = len(matriz[0])
 
-def crear_grafo(n=9):
-    g = grafo.Grafo()
+    if c < cant_col-1:
+        c += 1
+    else:
+        f += 1
+        c = 0
 
-    # Agregar los nodos (celdas del tablero)
-    for fila in range(n):
-        for columna in range(n):
-            g.agregar_vertice((fila, columna))
+    return f,c
 
-    # Agregar las aristas (adyacencias según las reglas del Sudoku)
-    for fila in range(n):
-        for columna in range(n):
-            nodo = (fila, columna)
+def compatible_fila(matriz,f,c):
+    num = matriz[f][c]
 
-            # Conectar con las celdas de la misma fila (solo hacia adelante)
-            for c in range(columna + 1, n):
-                agregar_arista_unica(g, nodo, (fila, c), peso=1)
-
-            # Conectar con las celdas de la misma columna (solo hacia adelante)
-            for f in range(fila + 1, n):
-                agregar_arista_unica(g, nodo, (f, columna), peso=1)
-
-            # Conectar con las celdas del mismo subgrupo 3x3
-            subgrupo_fila = (fila // 3) * 3
-            subgrupo_columna = (columna // 3) * 3
-            for i in range(subgrupo_fila, subgrupo_fila + 3):
-                for j in range(subgrupo_columna, subgrupo_columna + 3):
-                    # Para evitar duplicados, solo se agrega si es un nodo posterior
-                    if (i, j) != nodo and (i > fila or (i == fila and j > columna)):
-                        agregar_arista_unica(g, nodo, (i, j), peso=1)
-
-    return g
-
-
-def es_compatible(grafo,numeros, fila, col):
-    for ady in grafo.adyacentes((fila, col)):
-        if ady in numeros:
-            if numeros[(fila,col)] == numeros[ady]:
-                return False
-            
+    for j in range(len(matriz[f])):
+        if j == c:
+            continue
+        if matriz[f][j] == num:
+            return False
+        
     return True
 
-
-def resolver_sudoku_bt(matriz,fila,col,numeros, grafo):
-    if len(numeros) == len(matriz)*len(matriz[0]):
-        return numeros
-
-
-    if matriz[fila][col] == 0:
-        for num in range(1,10):
-            numeros[(fila,col)]= num
-            if es_compatible(grafo, numeros, fila, col):
-                siguiente_fila = fila
-                siguiente_col = col + 1
-                if siguiente_col == len(matriz[0]):  # Si llegamos al final de la fila
-                    siguiente_col = 0
-                    siguiente_fila += 1
-                numeros = resolver_sudoku_bt(matriz, fila, col, numeros)
-                if len(numeros) == len(matriz)*len(matriz[0]):
-                    return numeros
-        del numeros[(fila, col)]
-        matriz[fila][col] = 0
-    else:
-        # Si la celda ya tiene un número, avanzar a la siguiente celda
-        siguiente_fila = fila
-        siguiente_col = col + 1
-        if siguiente_col == len(matriz[0]):  # Si llegamos al final de la fila
-            siguiente_col = 0
-            siguiente_fila += 1
-        numeros = resolver_sudoku_bt(matriz, fila, col, numeros)
-        return numeros
-
-    return None
-
-def cargar_numeros(numeros, matriz):
-    for i in range(len(matriz)):
-        for j in range(len(matriz[i])):
-            matriz[i][j] = numeros[(i,j)]
-    return matriz
-
-def resolver_sudoku(matriz):
-    numeros = {}
-
-    grafo = crear_grafo(len(matriz))
+def compatible_col(matriz,f,c):
+    num = matriz[f][c]
 
     for i in range(len(matriz)):
-        for j in range(len(matriz[i])):
-            if matriz[i][j] != 0:
-                numeros[(i,j)] = matriz[i][j]
-
-
-    numeros = resolver_sudoku_bt(matriz,0,0,numeros, grafo)
-
-    matriz = cargar_numeros(numeros,matriz)
-
-    return matriz
-
-def es_compatible(grafo,numeros, fila, col):
-    for ady in grafo.adyacentes((fila, col)):
-        if ady in numeros:
-            if numeros[(fila,col)] == numeros[ady]:
-                return False
-            
+        if i == f:
+            continue
+        if matriz[i][c] == num:
+            return False
+    
     return True
 
+def compatible_subgrupo(matriz,f,c):
+    num = matriz[f][c]
 
-def resolver_sudoku_bt(matriz,fila,col,numeros, grafo):
-    if len(numeros) == len(matriz)*len(matriz[0]):
-        return numeros
+    # Calcular las coordenadas del subgrupo 3x3
+    subgrupo_fila_inicio = (f // 3) * 3
+    subgrupo_col_inicio = (c // 3) * 3
 
+    # Recorrer todas las celdas del subgrupo 3x3
+    for i in range(subgrupo_fila_inicio, subgrupo_fila_inicio + 3):
+        for j in range(subgrupo_col_inicio, subgrupo_col_inicio + 3):
+            if (i == f and j == c):  # Saltar la celda actual
+                continue
+            if matriz[i][j] == num:  # Si el número ya está en el subgrupo
+                return False
 
-    if matriz[fila][col] == 0:
-        for num in range(1,10):
-            numeros[(fila,col)]= num
-            if es_compatible(grafo, numeros, fila, col):
-                siguiente_fila = fila
-                siguiente_col = col + 1
-                if siguiente_col == len(matriz[0]):  # Si llegamos al final de la fila
-                    siguiente_col = 0
-                    siguiente_fila += 1
-                numeros = resolver_sudoku_bt(matriz, fila, col, numeros)
-                if len(numeros) == len(matriz)*len(matriz[0]):
-                    return numeros
-        del numeros[(fila, col)]
-        matriz[fila][col] = 0
-    else:
-        # Si la celda ya tiene un número, avanzar a la siguiente celda
-        siguiente_fila = fila
-        siguiente_col = col + 1
-        if siguiente_col == len(matriz[0]):  # Si llegamos al final de la fila
-            siguiente_col = 0
-            siguiente_fila += 1
-        numeros = resolver_sudoku_bt(matriz, fila, col, numeros)
-        return numeros
+    return True
 
-    return None
+def es_compatible(matriz,f,c):
+    if not compatible_fila(matriz,f,c):
+        return False
+    if not compatible_col(matriz,f,c):
+        return False
+    if not compatible_subgrupo(matriz,f,c):
+        return False
+    
+    return True
 
-def cargar_numeros(numeros, matriz):
-    for i in range(len(matriz)):
-        for j in range(len(matriz[i])):
-            matriz[i][j] = numeros[(i,j)]
-    return matriz
+def sudoku_bt(matriz,f,c):
+    if f == n:
+        return True
+
+    if matriz[f][c] != 0:
+        #ya esta seteado, busco sig posicion
+        f, c = siguiente_pos(matriz,f,c)
+        return sudoku_bt(matriz,f,c)
+    
+    for i in range(1,10):
+        matriz[f][c] = i
+        if es_compatible(matriz,f,c):
+            f,c = siguiente_pos(matriz,f,c)
+            if sudoku_bt(matriz,f,c):
+                return True
+
+    matriz[f][c] = 0
+    return False
+
 
 def resolver_sudoku(matriz):
-    numeros = {}
-
-    grafo = crear_grafo(len(matriz))
-
-    for i in range(len(matriz)):
-        for j in range(len(matriz[i])):
-            if matriz[i][j] != 0:
-                numeros[(i,j)] = matriz[i][j]
+    if sudoku_bt(matriz, 0,0):
+        return matriz
+    return None
 
 
-    numeros = resolver_sudoku_bt(matriz,0,0,numeros, grafo)
 
-    matriz = cargar_numeros(numeros,matriz)
-
-    return matriz
+matriz = [[5, 3, 0, 0, 7, 0, 0, 0, 0], [6, 0, 0, 1, 9, 5, 0, 0, 0], [0, 9, 8, 0, 0, 0, 0, 6, 0], [8, 0, 0, 0, 6, 0, 0, 0, 3], [4, 0, 0, 8, 0, 3, 0, 0, 1], [7, 0, 0, 0, 2, 0, 0, 0, 6], [0, 6, 0, 0, 0, 0, 2, 8, 0], [0, 0, 0, 4, 1, 9, 0, 0, 5], [0, 0, 0, 0, 8, 0, 0, 7, 9]]
+print(resolver_sudoku(matriz))
