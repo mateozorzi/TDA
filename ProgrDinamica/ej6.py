@@ -65,4 +65,4 @@ def numeros_posibles(k, n):
     return matriz[k][n-1]
 
 
-print(numeros_posibles(5,12))
+print(numeros_posibles(3,2))
