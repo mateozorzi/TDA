@@ -1,0 +1,24 @@
+Voy a guardar mis óptimos en una matriz, donde el índice de la fila simboliza el inicio de una serie de letras (i)
+y donde el índice de la columna el final de la serie de letras del mensaje (j).
+Es decir, se debe cumplir que j > i, sino el óptimo será 0.
+Pregunto si el mensaje desde i hasta j (mensaje[i:j+1]) es una palabra del diccionario:
+→ Si lo es: entonces óptimo[i][j] = (j+1) - i.
+→ Si no lo es:
+  Veo cuál es el óptimo calculado anteriormente con una letra menos, moviendo el inicio de la secuencia en 1 (i+1).
+  optimoAnterior = optimos[i+1][j] = k.
+  Ahora no tengo en cuenta esas k letras desde j hacia atrás, y compruebo si:
+    → Si mensaje[i:j-k+1] es una palabra, entonces:
+      optimo[i][j] = (j+1-k) - i + optimos[i+1][j].
+    → Si no es palabra, entonces tendré que seguir dividiendo en otras iteraciones.
+      Me quedo con el óptimo de esas letras restantes, que está calculado en opt[i][j - optimos[i+1][j]],
+      y luego sumo los resultados:
+      opt[i][j] = opt[i][j - optimos[i+1][j]] + opt[i+1][j].
+
+El cálculo de los óptimos comenzará con i = n - 2 (no empieza en la última letra) y j = n - 1.
+Con esto me quedaría el óptimo en la posición optimos[i][j] con i = 0 y j = n - 1.
+Para que exista un mensaje donde se encuentran palabras del diccionario, el largo de optimos[i][j] tiene que ser igual a len(mensaje).
+
+Por ejemplo, si tengo el mensaje "heestado", i = 0, j = 8
+Veo si "heestado" es una palabra del diccionario:
+→ No lo es: el óptimo anterior opt[i+1][j] = 6 (de "estado")
+Entonces me queda comprobar si "he" es una palabra del diccionario o tengo que volver a dividirla.
