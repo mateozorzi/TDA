@@ -40,4 +40,11 @@ def proyectos(proy, K):
             break
 
 #Regla greedy: En mi situacion local, busco asignar un proyecto de menor tiempo de finalizacion (termina antes) al primer equipo que tenga ese horario libre
-#Es optimo? 
+#Es optimo? No, puede existir un conjunto de proyectos que segun como los reparte elalgoritmo no da la solucin optims
+#en este caso seria (4,6) (7,8) (9,10) (7, 11)
+#por asignar por el indice de finalizacion mas bajo al primer equipo posible. Primero se asignara (4,6) al equipo 1, luego el seugndo proyecto
+#tambien se asignara al equipo 1 ya que es comptible (7,8). para el tercer proyecto (9,10) este no puede ser realizdo por el euqipo 1 ya que se superpondiran,
+#por lo quese le asigna al equipo 2. Finalmente el ultimo proyecto (7,11) no puede ser asignadao a ningun equipo, por lo que no se realiza.
+#En cambio la solucion optima para ese caso deberia haber sido el asiganr los proyectos de esta manera
+#equipo1 = (4,6)(7,11)
+#equipo2 = (7,8) (9,10)
